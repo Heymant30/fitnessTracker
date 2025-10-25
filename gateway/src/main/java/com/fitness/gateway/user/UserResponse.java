@@ -1,10 +1,6 @@
-package com.fitness.userService.dto;
+package com.fitness.gateway.user;
 
-import com.fitness.userService.model.UserRole;
-import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 

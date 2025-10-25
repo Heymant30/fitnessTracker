@@ -18,18 +18,30 @@ public class UserService {
     public UserResponse register(RegisterRequest request) {
 
         if(repository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("Email Already Exists");
+            User existingUser = repository.findByEmail(request.getEmail());
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(existingUser.getId());
+            userResponse.setKeyCloakId(existingUser.getKeyCloakId());
+            userResponse.setPassword(existingUser.getPassword());
+            userResponse.setEmail(existingUser.getEmail());
+            userResponse.setFirstName(existingUser.getFirstName());
+            userResponse.setLastName(existingUser.getLastName());
+            userResponse.setCreatedAt(existingUser.getCreatedAt());
+            userResponse.setUpdatedAt(existingUser.getUpdatedAt());
+            return userResponse;
         }
 
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setKeyCloakId(request.getKeyCloakId());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
 
         User saveduser = repository.save(user);
         UserResponse userResponse = new UserResponse();
         userResponse.setId(saveduser.getId());
+        userResponse.setKeyCloakId(saveduser.getKeyCloakId());
         userResponse.setPassword(saveduser.getPassword());
         userResponse.setEmail(saveduser.getEmail());
         userResponse.setFirstName(saveduser.getFirstName());
@@ -55,6 +67,6 @@ public class UserService {
 
     public Boolean existByuserId(String userId) {
         log.info("Calling User Validation API for userId : {}", userId);
-        return repository.existsById(userId);
+        return repository.existsByKeyCloakId(userId);
     }
 }
